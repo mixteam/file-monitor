@@ -47,7 +47,7 @@ function parseMonitor(monitorFile) {
 				monitorGroup = undefined;
 			}
 
-			monitorGroup = { commands : cmds[1].split(','), files : []}
+			monitorGroup = { commands : cmds[1].split(/,\s*/), files : []}
 		} else {
 			monitorGroup.files.push(line);
 		}
@@ -62,16 +62,23 @@ function parseMonitor(monitorFile) {
 
 function runCmds(dirname, cmds) {
 	var opt = {
-		cwd : dirname, 
-		encoding : 'utf8'
-	}
+			cwd : dirname, 
+			encoding : 'utf8'
+		},
+		cmd
+		;
 
-	cmds.forEach(function(cmd) {
+	if (cmds.length) {
+		cmd = cmds.shift();
 		exec(cmd, opt, function(error, stdout, stderr) {
-			util.log(stdout);
-			util.error(stderr);
+			stdout && util.log(stdout);
+			(error || stderr) && util.error(error || stderr);
+			runCmds(dirname, cmds);
 		});
-	});
+
+		util.debug(new Date().toTimeString().match(/\d{1,2}\:\d{1,2}\:\d{1,2}/g)[0] + 
+					' - [run] ' + cmd + ' ');
+	}
 }
 
 function monitorFile(file, callback) {
