@@ -91,6 +91,7 @@ function monitorFile(file, callback) {
 
 		if (timestamp !== lastTimestamp) {
 			lastTimestamp = timestamp;
+			console.log('xxxx');
 
 			callback();
 		}
@@ -109,7 +110,7 @@ function monitorGroup(dirname, group) {
 		filepath = path.join(dirname, file);
 
 		id = monitorFile(filepath, function() {
-			runCmds(dirname, cmds);
+			runCmds(dirname, cmds.slice(0));
 		});
 
 		fileMonitorId.push(id);
