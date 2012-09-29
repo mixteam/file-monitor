@@ -82,18 +82,24 @@ function runCmds(dirname, cmds) {
 }
 
 function monitorFile(file, callback) {
-	var lastTimestamp = fs.statSync(file).mtime.getTime();
+	var lastTimestamp;
+
+	if (fs.existsSync(file)) {
+		lastTimestamp = fs.statSync(file).mtime.getTime();
+	} else {
+		lastTimestamp = 0;
+	}
 
 	return setInterval(function() {
-		var stat = fs.statSync(file),
-			timestamp = stat.mtime.getTime()
-			;
+		if (fs.existsSync(file)) {
+			var stat = fs.statSync(file),
+				timestamp = stat.mtime.getTime()
+				;
 
-		if (timestamp !== lastTimestamp) {
-			lastTimestamp = timestamp;
-			console.log('xxxx');
-
-			callback();
+			if (timestamp !== lastTimestamp) {
+				lastTimestamp = timestamp;
+				callback();
+			}
 		}
 	}, INTERVAL);
 }
