@@ -7,7 +7,7 @@ var fs = require("fs"),
 	spawn = require('child_process').spawn, 
 	exec = require('child_process').exec,
 
-	VERSION = '0.1.0',
+	VERSION = '0.2.0',
 	INTERVAL = 500,
 
 	options = {
@@ -179,13 +179,12 @@ function parse(dirname) {
 	});
 }
 
-if (require.main === module) {
-
-	var argv = process.argv.slice(2)
+function main(argv) {
+	var args = argv.slice(2)
 		;
 
-	while (argv.length > 0) {
-		var v = argv.shift();
+	while (args.length > 0) {
+		var v = args.shift();
 		switch(v) {
 			case '-r':
 			case '--recursion':
@@ -193,7 +192,7 @@ if (require.main === module) {
 				break;
 			case '-m':
 			case '--monitor':
-				options.monitor_file = argv.shift();
+				options.monitor_file = args.shift();
 				break;
 			case '-v':
 			case '--version':
@@ -206,6 +205,10 @@ if (require.main === module) {
 	}
 
 	parse(workingDir);
+}
+
+if (require.main === module) {
+	main(process.argv);
 } else {
-	module.exports = monitor;
+	module.exports = main;
 }
