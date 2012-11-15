@@ -12,9 +12,9 @@ var fs = require("fs"),
 
 	options = {
 		recursion : false,
-		monitor_file : '.monitor'
+		monitor_file : '.monitor',
+		working_dir : './'
 	},
-	workingDir,
 
 	CMD_REGEXP = /^\[([^\[\]]+)\]$/,
 	EMPTY_LINE_REGEXP = /^[\r\n]*$/
@@ -179,36 +179,44 @@ function parse(dirname) {
 	});
 }
 
-function main(argv) {
-	var args = argv.slice(2)
-		;
-
-	while (args.length > 0) {
-		var v = args.shift();
-		switch(v) {
-			case '-r':
-			case '--recursion':
-				options.recursion = true;
-				break;
-			case '-m':
-			case '--monitor':
-				options.monitor_file = args.shift();
-				break;
-			case '-v':
-			case '--version':
-				util.print('version ' + VERSION);
-				process.exit(0);
-			default:
-				workingDir = v;
-				break;
+function main(args) {
+	if (args && args instanceof Array){
+		while (args.length > 0) {
+			var v = args.shift();
+			switch(v) {
+				case '-r':
+				case '--recursion':
+					options.recursion = true;
+					break;
+				case '-m':
+				case '--monitor':
+					options.monitor_file = args.shift();
+					break;
+				case '-v':
+				case '--version':
+					util.print('version ' + VERSION);
+					process.exit(0);
+				default:
+					options.working_dir = v;
+					break;
+			}
+		}
+	}else if (args && typeof args === 'object') {
+		for (var k in opt) {
+			options[k] = opt[k];
 		}
 	}
 
-	parse(workingDir);
+
+	if (!options.working_dir) {
+		util.error('no working dir for monitor');
+	} else {
+		parse(options.working_dir);
+	}
 }
 
 if (require.main === module) {
-	main(process.argv);
+	main(process.argv.slice(2));
 } else {
 	module.exports = main;
 }

@@ -1,7 +1,26 @@
 {
-    "name" : "mix/tools/monitor",
-    "description" : "the file monitor",
+    "name" : "fmonitor",
+    "description" : "It's a files monitor. When the file modified, it will run some command automatically.",
+	"version" : "0.2.0",
     "author" : "zhuxun <zhuxun.jb@taobao.com>",
-    "version" : "0.1.0",
-    "main" : "./src/monitor.js"
+	"keywords": [
+		"monitor",
+		"command",
+		"tool",
+		"batch"
+	],
+	"engines": {
+		"node": ">= 0.8.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/mixteam/monitor.git"
+	},
+    "main" : "./src/monitor.js",
+	"bin": {
+		"fmonitor": "./src/monitor.js"
+	},
+	"readme": "一个实时监控文件并执行命令的工具",
+	"_id": "fmonitor@0.2.0",
+	"_from": "fmonitor"
 }
