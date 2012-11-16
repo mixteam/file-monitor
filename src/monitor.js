@@ -202,8 +202,8 @@ function main(args) {
 			}
 		}
 	}else if (args && typeof args === 'object') {
-		for (var k in opt) {
-			options[k] = opt[k];
+		for (var k in args) {
+			options[k] = args[k];
 		}
 	}
 
