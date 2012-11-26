@@ -16,7 +16,7 @@
 
 ## 使用
 
-	$ fmointor [working_dir] [options]
+	$ fmonitor [working_dir] [options]
 
 * workding_dir（可选）：需要监控的目录，默认为当前目录
 * options（可选）：
